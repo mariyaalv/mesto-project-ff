@@ -98,9 +98,8 @@ formElement.addEventListener("submit", handleFormSubmit);
 
 // Обработчик добавления карточки
 function addNewCardSubmit(evt) {
-  evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
+  evt.preventDefault();
   const cardNewData = {
-    //вынесли данные карточки в объект
     name: namePlaceInput.value,
     link: urlPlaceInput.value,
   };
@@ -118,5 +117,4 @@ function addNewCardSubmit(evt) {
   formNewCard.reset();
 }
 
-// Прикрепляем обработчик к форме:
 formNewCard.addEventListener("submit", addNewCardSubmit);
