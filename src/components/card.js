@@ -31,7 +31,6 @@ export function likeCards(evt, selector) {
   eventTarget.classList.toggle(selector);
 }
 
-
 // @todo: функция добавления карточек вынесена отдельно
 export function addCard(place, cards) {
   place.append(cards);
