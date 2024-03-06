@@ -7,7 +7,7 @@ export function openModal (popupElement) {
 // @todo: функция закрытия модального окна
 export function closeModal (popupElement) {
   popupElement.classList.remove('popup_is-opened');
-  document.removeEventListener('click', closeByEsc);
+  document.removeEventListener('keydown', closeByEsc);
 }
 
 // @todo: функция-обработчик события нажатия Esc

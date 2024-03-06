@@ -4,7 +4,6 @@ import {
   createCards,
   deleteCards,
   likeCards,
-  addCard,
 } from "./components/card";
 import { openModal, closeModal } from "./components/modal.js";
 
@@ -22,34 +21,35 @@ const cardData = {
 
 const buttonAdd = document.querySelector(".profile__add-button");
 const buttonEdit = document.querySelector(".profile__edit-button");
-const buttonClose = document.querySelectorAll(".popup__close");
+const buttonsClose = document.querySelectorAll(".popup__close");
 const popupEdit = document.querySelector(".popup_type_edit");
 const popupAdd = document.querySelector(".popup_type_new-card");
 const popupImage = document.querySelector(".popup_type_image");
 const picturePopupImage = popupImage.querySelector(".popup__image");
-const buttonOverlay = document.querySelectorAll(".popup__content");
-const content = document.querySelector(".page__content");
+const captionPopupImage = popupImage.querySelector(".popup__caption");
+const buttonsOverlay = document.querySelectorAll(".popup");
 
-const formElement = document.querySelector(".popup__form");
-const nameInput = formElement.querySelector(".popup__input_type_name");
-const jobInput = formElement.querySelector(".popup__input_type_description");
+const formEditCard = document.forms['edit-profile'];
+const nameInput = formEditCard.querySelector(".popup__input_type_name");
+const jobInput = formEditCard.querySelector(".popup__input_type_description");
 const profileName = document.querySelector(".profile__title");
 const profileJob = document.querySelector(".profile__description");
 
-const formNewCard = popupAdd.querySelector(".popup__form");
-const namePlaceInput = formNewCard.querySelector(
-  ".popup__input_type_card-name"
-);
+const formNewCard = document.forms['new-place'];
+const namePlaceInput = formNewCard.querySelector(".popup__input_type_card-name");
 const urlPlaceInput = formNewCard.querySelector(".popup__input_type_url");
 
-// @todo: функция-обработчик события клика по оверлею
-content.addEventListener("click", function (evt) {
-  closeModal(evt.target);
-});
+// @todo: функция добавления карточек вынесена отдельно
+function addCard(place, cards) {
+  place.append(cards);
+}
 
-buttonOverlay.forEach((element) => {
+// @todo: функция-обработчик события клика по оверлею
+buttonsOverlay.forEach((element) => {
   element.addEventListener("click", (evt) => {
-    evt.stopPropagation();
+    if(evt.target === evt.currentTarget) {
+      closeModal(element);
+    }
   });
 });
 
@@ -71,17 +71,17 @@ buttonAdd.addEventListener("click", function () {
   openModal(popupAdd);
 });
 
-buttonClose.forEach((element) => {
+buttonsClose.forEach((element) => {
   element.addEventListener("click", function () {
     closeModal(element.closest(".popup"));
   });
 });
 
 // @todo: Функция-колбэк для просмотра карточки
-function openImage(evt) {
-  const eventTarget = evt.target;
-  picturePopupImage.src = eventTarget.src;
-  picturePopupImage.link = eventTarget.link;
+function openImage(link, name) {
+  picturePopupImage.src = link;
+  picturePopupImage.alt = name;
+  captionPopupImage.textContent = name;
   openModal(popupImage);
 }
 
@@ -94,7 +94,7 @@ function handleFormSubmit(evt) {
 }
 
 // Прикрепляем обработчик к форме:
-formElement.addEventListener("submit", handleFormSubmit);
+formEditCard.addEventListener("submit", handleFormSubmit);
 
 // Обработчик добавления карточки
 function addNewCardSubmit(evt) {
