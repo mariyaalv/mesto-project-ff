@@ -1,10 +1,6 @@
 import "./pages/index.css";
 import { initialCards } from "./components/cards.js";
-import {
-  createCards,
-  deleteCards,
-  likeCards,
-} from "./components/card";
+import { createCards, deleteCards, likeCards } from "./components/card";
 import { openModal, closeModal } from "./components/modal.js";
 
 const cardTmp = document.querySelector("#card-template").content; //получили доступ к содержимому
@@ -27,31 +23,23 @@ const popupAdd = document.querySelector(".popup_type_new-card");
 const popupImage = document.querySelector(".popup_type_image");
 const picturePopupImage = popupImage.querySelector(".popup__image");
 const captionPopupImage = popupImage.querySelector(".popup__caption");
-const buttonsOverlay = document.querySelectorAll(".popup");
 
-const formEditCard = document.forms['edit-profile'];
+const formEditCard = document.forms["edit-profile"];
 const nameInput = formEditCard.querySelector(".popup__input_type_name");
 const jobInput = formEditCard.querySelector(".popup__input_type_description");
 const profileName = document.querySelector(".profile__title");
 const profileJob = document.querySelector(".profile__description");
 
-const formNewCard = document.forms['new-place'];
-const namePlaceInput = formNewCard.querySelector(".popup__input_type_card-name");
+const formNewCard = document.forms["new-place"];
+const namePlaceInput = formNewCard.querySelector(
+  ".popup__input_type_card-name"
+);
 const urlPlaceInput = formNewCard.querySelector(".popup__input_type_url");
 
 // @todo: функция добавления карточек вынесена отдельно
 function addCard(place, cards) {
   place.append(cards);
 }
-
-// @todo: функция-обработчик события клика по оверлею
-buttonsOverlay.forEach((element) => {
-  element.addEventListener("click", (evt) => {
-    if(evt.target === evt.currentTarget) {
-      closeModal(element);
-    }
-  });
-});
 
 //для каждого элемента из массива initialCards должна запуститься функция
 initialCards.forEach((element) => {
@@ -71,9 +59,14 @@ buttonAdd.addEventListener("click", function () {
   openModal(popupAdd);
 });
 
-buttonsClose.forEach((element) => {
-  element.addEventListener("click", function () {
-    closeModal(element.closest(".popup"));
+// @todo: функция-обработчик закрытия по крестику и события клика по оверлею
+buttonsClose.forEach((btn) => {
+  const popup = btn.closest(".popup");
+  btn.addEventListener("click", () => closeModal(popup));
+  popup.addEventListener("mousedown", (evt) => {
+    if (evt.target.classList.contains("popup")) {
+      closeModal(popup);
+    }
   });
 });
 
