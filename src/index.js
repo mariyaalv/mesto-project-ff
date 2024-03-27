@@ -23,7 +23,7 @@ const validationConfig = {
   errorClass: "popup__error_visible",
 };
 
-const cardData = {
+const cardSelectors = {
   //вынесли данные карточки в объект
   card: ".places__item",
   image: ".card__image",
@@ -121,27 +121,16 @@ const handleDeleteCard = (cardId, cardElement) => {
 const handleLikeCard = (cardId, card, userId, cardLikeButton, likesCount) => {
   likesCount.textContent = card.likes.length;
   const isLiked = card.likes.some((like) => like._id === userId);
-  if (isLiked) {
-    dislikeCardsStatus(cardId)
+  const likeMethod = isLiked ? dislikeCardsStatus : likeCardsStatus;
+  likeMethod(cardId)
       .then((data) => {
-        cardLikeButton.classList.remove(cardData.buttonLikeActive);
+        cardLikeButton.classList.toggle(cardSelectors.buttonLikeActive);
         likesCount.textContent = data.likes.length;
         card.likes = data.likes;
       })
       .catch((err) => {
         console.log(err);
       });
-  } else {
-    likeCardsStatus(cardId)
-      .then((data) => {
-        cardLikeButton.classList.add(cardData.buttonLikeActive);
-        likesCount.textContent = data.likes.length;
-        card.likes = data.likes;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
 };
 
 // Обработчик редактирование профиля
@@ -175,7 +164,7 @@ function addNewCardSubmit(evt) {
         createCards(
           cardTmp,
           data,
-          cardData,
+          cardSelectors,
           {
             onDeleteCard: handleDeleteCard,
             onPreviewPicture: handlePreviewPicture,
@@ -233,7 +222,7 @@ Promise.all([getCardList(), getUserInfo()])
         createCards(
           cardTmp,
           data,
-          cardData,
+          cardSelectors,
           {
             onDeleteCard: handleDeleteCard,
             onPreviewPicture: handlePreviewPicture,

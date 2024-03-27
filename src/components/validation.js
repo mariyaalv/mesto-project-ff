@@ -71,8 +71,8 @@ export const enableValidation = (config) => {
 export const clearValidation = (profileForm, config) => {
   const inputList = Array.from(profileForm.querySelectorAll(config.inputSelector));
   const button = profileForm.querySelector(config.submitButtonSelector);
+  toggleButtonState(inputList, button, config);
   inputList.forEach((input) => {
-    toggleButtonState(inputList, button, config);
     hideInputError(profileForm, input, config);
   })
 }
